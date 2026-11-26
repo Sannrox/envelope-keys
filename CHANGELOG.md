@@ -2,7 +2,7 @@
 
 ## [Unreleased]
 
-## [0.1.0]
+## [1.0.0]
 
 First release. Extracted unchanged from `sekai-keys` 1.0.0 apart from the
 crate name, including the KEK zeroization fixes that followed that release.
