@@ -25,6 +25,13 @@ fn provider_copy(test: &str) -> (PathBuf, FileKeyProvider) {
     fs::create_dir_all(&dir).expect("temp dir");
     let kek = dir.join("provider.kek");
     fs::copy(format!("{FIXTURES}/provider.kek"), &kek).expect("copy kek");
+    // Git checks the fixture out world-readable; the provider refuses a KEK
+    // file that is not owner-only.
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::PermissionsExt;
+        fs::set_permissions(&kek, fs::Permissions::from_mode(0o600)).expect("chmod kek");
+    }
     let provider = FileKeyProvider::open(&kek, RuntimeProfile::Development).expect("open kek");
     (dir, provider)
 }
